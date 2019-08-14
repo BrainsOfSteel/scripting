@@ -4,7 +4,9 @@ import Util.PostCallAndData;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class CreateUserScript {
     public static void main(String[] args) {
@@ -28,7 +30,24 @@ public class CreateUserScript {
 //            PostCallAndData.makePostCall(userCreationJson, url);
 //        }
 
-        borrowBook(10L, "barcode1");
+//        borrowBook(10L, "barcode1");
+        payDues(10L, 40.0, Arrays.asList(3L,4L));
+    }
+    static void payDues(Long userId, Double amount, List<Long> paymentIds){
+        String url = "http://localhost:8080/user/payDues/"+userId+"/"+amount;
+        String csPayIds = "";
+        for(int i=0;i<paymentIds.size();i++){
+            if(i == paymentIds.size()-1){
+                csPayIds = csPayIds+paymentIds.get(i);
+            }
+            else{
+                csPayIds = csPayIds + paymentIds.get(i)+",";
+            }
+        }
+
+        url = url + "?paymentId="+csPayIds;
+        PostCallAndData.makeGetCall(url);
+
 
     }
 
